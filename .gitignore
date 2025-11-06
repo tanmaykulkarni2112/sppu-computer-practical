@@ -97,7 +97,6 @@ share/python-wheels/
 *.nbconvert.ipynb
 
 # Data and model files
-*.csv
 *.tsv
 *.xls
 *.xlsx
