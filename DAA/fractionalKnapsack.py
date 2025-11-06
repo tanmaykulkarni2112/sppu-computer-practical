@@ -4,25 +4,27 @@ capacity = 5
 
 
 def knap(weights ,values,capacity):
-    memo = {}
-    n = len(weights)
+    result = 0
+    w =[]
 
-    def helper(i, remaining):
+    for i in range(len(weights)):
+        # value per gm
+        w.append(values[i] / weights[i])
 
-        if i < 0 or remaining == 0:
-            return 0
-        
-        if (i, remaining) in memo:
-            return memo[(i, remaining)]
-        
-        notTaken = helper(i -1, remaining)
-        taken = 0
-        if weights[i] <= remaining:
-            taken = values[i] + helper(i -1, remaining - weights[i])
+    for i in range(len(w)):
+        maxIdx = i
+        for j in range(i + 1, len(w)):
+            if w[maxIdx] < w[j]:
+                maxIdx = j
+        weights[maxIdx], weights[i] = weights[i], weights[maxIdx]
+        values[maxIdx], values[i] = values[i], values[maxIdx]
 
-        memo[(i, remaining)] = max(taken, notTaken)
-        return memo[(i, remaining)]
-    
-    return helper(n - 1, capacity)
+    for i in range(len(weights)):
+        if capacity <= weights[i]:
+            result += capacity * (values[i]/weights[i])
+            break
+        capacity -= weights[i]
+        result += values[i]
+    return result
 
 print(knap(weights ,values,capacity))
